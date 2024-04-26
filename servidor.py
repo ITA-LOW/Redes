@@ -3,7 +3,7 @@ import jwt
 from functools import wraps
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'sua_chave_secreta'
+app.config['SECRET_KEY'] = 'ita'
 
 # Simulando um banco de dados de usuários (pode ser substituído por um banco de dados real)
 users = {}
@@ -36,16 +36,19 @@ def register():
 # Rota para login e obtenção do token JWT
 @app.route('/login', methods=['POST'])
 def login():
-    auth = request.authorization
+    data = request.get_json()
 
-    if not auth or not auth.username or not auth.password:
+    if not data or 'username' not in data or 'password' not in data:
         return jsonify({'error': 'Credenciais inválidas!'}), 401
 
-    if auth.username not in users or users[auth.username] != auth.password:
+    username = data['username']
+    password = data['password']
+
+    if username not in users or users[username] != password:
         return jsonify({'error': 'Nome de usuário ou senha incorretos!'}), 401
 
-    token = jwt.encode({'username': auth.username}, app.config['SECRET_KEY'])
-    return jsonify({'token': token.decode('UTF-8')}), 200
+    token = jwt.encode({'username': username}, app.config['SECRET_KEY'], algorithm='HS256')
+    return jsonify({'token': token}), 200
 
 # Rota para acesso ao serviço protegido
 @app.route('/protected', methods=['GET'])

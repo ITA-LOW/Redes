@@ -1,23 +1,21 @@
-jwt = JWTManager(app)
+import requests
 
+# URL do servidor para login
+login_url = "http://localhost:5000/login"
 
-# Esta rota é para o usuário se autenticar.
-# Se o token expirar, ele terá que logar novamente.
-# Você pode estabeler mecanismo de refresh automático do token.
+# Dados do usuário para login
+login_data = {
+    "username": "teste",
+    "password": "teste"
+}
 
-@app.route("/login", methods=["POST"])
-def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    if username != "test" or password != "test":
-        return jsonify({"msg": "Username ou senha incorretos"}), 401
-        # Você precisa proteger contra ataque de força bruta.
-        # Pode contar quantas vezes um usuário tentou logar com erro.
-        # e/ou pode enviar um CAPTCHA a ele.
+# Envia uma requisição POST para o servidor com os dados de login
+response = requests.post(login_url, json=login_data)
 
-    access_token = create_access_token(identity=username)
-
-    # O default é retornar o token no corpo do request. 
-    # O cliente tem que enviar um header "Authorization: Bearer <token>"
-
-    return jsonify(access_token=access_token)
+# Verifica se a requisição foi bem-sucedida
+if response.status_code == 200:
+    # Extrai o token JWT da resposta
+    jwt_token = response.json().get('token')
+    print("Login bem-sucedido! Token JWT obtido:", jwt_token)
+else:
+    print("Erro ao fazer login:", response.json())
