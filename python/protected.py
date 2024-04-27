@@ -1,8 +1,7 @@
 import requests
 
 protected_url = "http://localhost:5000/protected"
-token = "seu_token_jwt"
-
+token = "seu_token_aqui"
 headers = {
     "Authorization": f"Bearer {token}"
 }
