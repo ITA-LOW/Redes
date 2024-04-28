@@ -15,7 +15,7 @@ def register():
     username = data.get('username')
     password = data.get('password')
     registered_users[username] = password
-    return jsonify({'message': 'Usuário registrado com sucesso!'}), 201
+    return jsonify({'message': 'Usuario registrado com sucesso!'}), 201
 
 # Rota para login e obtenção do token JWT
 @app.route('/login', methods=['POST'])
@@ -23,10 +23,10 @@ def login():
     auth = request.authorization
 
     if not auth or not auth.username or not auth.password:
-        return jsonify({'error': 'Credenciais inválidas!'}), 401
+        return jsonify({'error': 'Credenciais invalidas!'}), 401
 
     if auth.username not in registered_users or registered_users[auth.username] != auth.password:
-        return jsonify({'error': 'Nome de usuário ou senha incorretos!'}), 401
+        return jsonify({'error': 'Nome de usuario ou senha incorretos!'}), 401
 
     access_token = create_access_token(identity=auth.username)
     return jsonify({'token': access_token}), 200
