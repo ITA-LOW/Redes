@@ -16,18 +16,14 @@ else:
 
 ####################################################### login ###############################################
 login_url = "http://192.168.31.75:80/login"
-user_data = {
-    "username": "seu_nome_de_usuario",
-    "password": "sua_senha"
-}
 
-response = requests.post(login_url, auth=(user_data["username"], user_data["password"]))
+response = requests.post(login_url, auth=(user_data_register["username"], user_data_register["password"]))
 
 # Verifica se o login foi bem-sucedido
 if response.status_code == 200:
     try:
-        # Extrai o token JWT da resposta e imprime
-        token = response.json().get("token")
+        # Extrai o token JWT da resposta
+        token = response.json().get("access_token")
     except ValueError:
         print("Erro: Não foi possível analisar a resposta do servidor como JSON.")
 else:

@@ -29,7 +29,7 @@ def login():
         return jsonify({'error': 'Nome de usuário ou senha incorretos!'}), 401
 
     access_token = create_access_token(identity=auth.username)
-    return jsonify({'token': access_token}), 200
+    return jsonify({'access_token': access_token}), 200
 
 # Rota para acesso ao serviço protegido
 @app.route('/protected', methods=['GET'])
